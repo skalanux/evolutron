@@ -40,7 +40,7 @@ class Juego(arcade.Window):
 
     def draw_vegetation(self):
         for coordenada in self.vegetacion_ubicacion:
-            arbol = arcade.Sprite(coordenada[2], center_x=coordenada[0], center_y=coordenada[1], scale=4)
+            arbol = arcade.Sprite(coordenada[2], center_x=coordenada[0], center_y=coordenada[1], scale=0.5)
             arbol.draw()
             #arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
 
