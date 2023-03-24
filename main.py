@@ -4,7 +4,7 @@ from random import randint,shuffle
 
 import arcade
 
-from individual import Individual
+from individual import Individual, TIPO_CLIMA_CALIDO, TIPO_CLIMA_TEMPLADO, TIPO_CLIMA_FRIO
 
 
 ARBOL="sprites/vegetation/arbol.png"
@@ -18,12 +18,17 @@ class Juego(arcade.Window):
         self.vegetacion_ubicacion=[]
         self.start_time=time.time()
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
-        self.create_vegetacion(160)
         self.fire=False
         self.individual_type = Individual(herbivoro=False)
         self.cant_individual = 1
         self.reproducirse = False
         self.status_individual = 'vivo'
+
+        # Defino bioma
+        self.create_vegetacion(160)
+        self.has_predators = True
+        self.tipo_clima = TIPO_CLIMA_CALIDO
+
 
     def iniciar_pantalla(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
@@ -66,7 +71,7 @@ class Juego(arcade.Window):
 
     def on_update(self,delta_time):
         cant_plantas = len(self.vegetacion_ubicacion)
-        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas)
+        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
 
         if survival == 1:
             self.status_individual = "vivo"
