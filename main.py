@@ -19,7 +19,7 @@ class Juego(arcade.Window):
         self.start_time=time.time()
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
         self.fire=False
-        self.individual_type = Individual(herbivoro=False)
+        self.individual_type = Individual(herbivoro=True)
         self.cant_individual = 1
         self.reproducirse = False
         self.status_individual = 'vivo'
@@ -71,7 +71,9 @@ class Juego(arcade.Window):
 
     def on_update(self,delta_time):
         cant_plantas = len(self.vegetacion_ubicacion)
+        print(cant_plantas)
         survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
+        print(survival)
 
         if survival == 1:
             self.status_individual = "vivo"
@@ -79,6 +81,7 @@ class Juego(arcade.Window):
             self.status_individual = "sobrevivo"
         else:
             self.status_individual = "extinto"
+
         self.tiempo_transcurrido = int(time.time() - self.start_time)
         if(self.tiempo_transcurrido)>=10:
             if self.status_individual == 'vivo':
