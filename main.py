@@ -16,10 +16,9 @@ class Juego(arcade.Window):
 
         self.vegetacion_ubicacion=[]
         self.start_time=time.time()
+        self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
         self.create_vegetacion(60)
         self.fire=False
-        self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
-
 
     def iniciar_pantalla(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
@@ -31,13 +30,12 @@ class Juego(arcade.Window):
             #print(f"vegetacion = {vegetacion}")
             punto_y=randint(380,900)
             punto_x=randint(00,1900)
+            self.vegetacion_ubicacion.append((punto_x,punto_y, next(self.plantas_sprites)))
             vegetacion += 1
-            self.vegetacion_ubicacion.append((punto_x,punto_y))
-
 
     def draw_vegetation(self):
         for coordenada in self.vegetacion_ubicacion:
-            arbol = arcade.Sprite(ARBOL, center_x=coordenada[0], center_y=coordenada[1], scale=2)
+            arbol = arcade.Sprite(coordenada[2], center_x=coordenada[0], center_y=coordenada[1], scale=2)
             arbol.draw()
             #arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
 
