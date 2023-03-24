@@ -20,7 +20,10 @@ class Juego(arcade.Window):
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
         self.create_vegetacion(60)
         self.fire=False
-        self.individual = Individual(herbivoro=True)
+        self.individual_type = Individual(herbivoro=True)
+        self.cant_individual = 1
+        self.reproducirse = False
+        self.status_individual = 'vivo'
 
     def iniciar_pantalla(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
@@ -45,18 +48,9 @@ class Juego(arcade.Window):
         arcade.start_render()
         pantalla.iniciar_pantalla()
         pantalla.draw_vegetation()
-        cant_plantas = len(self.vegetacion_ubicacion)
-        survival = self.individual.get_survival(cant_plantas)
 
-        print(survival)
-        if survival == 1:
-            status_individual = "vivo"
-        elif survival == 0.5:
-            status_individual = "sobrevivo"
-        else:
-            status_individual = "muero"
-
-        arcade.draw_text(status_individual, 850, 85, arcade.color.AQUA, 50)
+        arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
+        arcade.draw_text(self.cant_individual, 50, 85, arcade.color.AQUA, 50)
         #arcade.finish_render()
 
     def create_fire(self):
@@ -69,6 +63,23 @@ class Juego(arcade.Window):
 
 
     def on_update(self,delta_time):
+        cant_plantas = len(self.vegetacion_ubicacion)
+        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas)
+
+        if survival == 1:
+            self.status_individual = "vivo"
+        elif survival == 0.5:
+            self.status_individual = "sobrevivo"
+        else:
+            self.status_individual = "extinto"
+        tiempo_transcurrido = time.time() - self.start_time
+        print(tiempo_transcurrido)
+        if(tiempo_transcurrido)>=10:
+            print("reproducirse")
+            if self.status_individual == 'vivo':
+                self.cant_individual += 1
+            self.start_time = time.time()
+
         if self.fire:
             self.create_fire()
 
