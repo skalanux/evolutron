@@ -1,6 +1,7 @@
 import time
 from itertools import cycle
 from random import randint,shuffle
+import glob
 
 import arcade
 
@@ -25,6 +26,22 @@ class Juego(arcade.Window):
         self.reproducirse = False
         self.status_individual = 'vivo'
 
+        self.papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
+        self.rana_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PresaRana/Rana*.png")), 100)
+        self.roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
+
+        self.papa_sprite.center_x = 194
+        self.papa_sprite.center_y = 634
+        self.papa_sprite.scale = 0.5
+
+        self.rana_sprite.center_y = 368
+        self.rana_sprite.center_x = 368
+        self.rana_sprite.scale = 0.5
+
+        self.roca_sprite.center_x = 552
+        self.roca_sprite.center_y = 552
+        self.roca_sprite.scale = 0.3
+
     def iniciar_pantalla(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
         arcade.draw_rectangle_filled(960, 640, 1920, 600, arcade.color.WHITE)
@@ -48,6 +65,9 @@ class Juego(arcade.Window):
         arcade.start_render()
         pantalla.iniciar_pantalla()
         pantalla.draw_vegetation()
+        self.papa_sprite.draw()
+        self.rana_sprite.draw()
+        self.roca_sprite.draw()
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
         arcade.draw_text(self.cant_individual, 50, 85, arcade.color.AQUA, 50)
@@ -83,6 +103,9 @@ class Juego(arcade.Window):
         if self.fire:
             self.create_fire()
 
+        self.papa_sprite.update_animation(delta_time)
+        self.rana_sprite.update_animation(delta_time)
+        self.roca_sprite.update_animation(delta_time)
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.F:
@@ -90,6 +113,18 @@ class Juego(arcade.Window):
         if symbol == arcade.key.Q:
             arcade.exit()
         return super().on_key_press(symbol, modifiers)
+    
+    def load_images_sequence(self,filenames, frame_duration):
+        print(filenames)
+        sprite = arcade.AnimatedTimeBasedSprite()
+        for fname in filenames:
+            texture = arcade.load_texture(fname)
+            sprite.textures.append(texture)
+            frame = arcade.AnimationKeyframe(0, frame_duration, texture)
+            sprite.frames.append(frame)
+
+        #sprite.texture = sprite.textures[0]
+        return sprite
 
 
 
