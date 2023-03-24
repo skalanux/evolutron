@@ -76,7 +76,8 @@ class Juego(arcade.Window):
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.F:
             self.fire=True
-
+        if symbol == arcade.key.Q:
+            arcade.exit()
         return super().on_key_press(symbol, modifiers)
 
 
