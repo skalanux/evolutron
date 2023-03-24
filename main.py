@@ -4,14 +4,15 @@ from random import randint,shuffle
 
 import arcade
 
-from individual import Individual, TIPO_CLIMA_CALIDO, TIPO_CLIMA_TEMPLADO, TIPO_CLIMA_FRIO
+from bioma import Bioma, TIPO_CLIMA_CALIDO, TIPO_CLIMA_TEMPLADO, TIPO_CLIMA_FRIO
+from individual import Individual
 
 
 ARBOL="sprites/vegetation/arbol.png"
 HONGO="sprites/vegetation/honguito.png"
 
 class Juego(arcade.Window):
-    def __init__(self, width, heigth, title):
+    def __init__(self, width, heigth, title, bioma, individual):
         super().__init__(width, heigth, title, fullscreen=True)
         arcade.set_background_color(arcade.color.EERIE_BLACK)
 
@@ -19,15 +20,15 @@ class Juego(arcade.Window):
         self.start_time=time.time()
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
         self.fire=False
-        self.individual_type = Individual(herbivoro=True)
+        self.individual_type = individual
         self.cant_individual = 1
         self.reproducirse = False
         self.status_individual = 'vivo'
 
         # Defino bioma
-        self.create_vegetacion(160)
-        self.has_predators = True
-        self.tipo_clima = TIPO_CLIMA_CALIDO
+        self.create_vegetacion(bioma.cant_plantas)
+        self.has_predators = bioma.has_predators
+        self.tipo_clima = bioma.tipo_clima
 
 
     def iniciar_pantalla(self):
@@ -100,7 +101,13 @@ class Juego(arcade.Window):
         return super().on_key_press(symbol, modifiers)
 
 
-pantalla=Juego(1920,1080, 'Evolutron')
+individual = Individual(herbivoro=True)
+cant_plantas = 160
+tipo_clima = TIPO_CLIMA_TEMPLADO
+has_predators = True
+cant_preys = 100
+
+bioma = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys)
+pantalla = Juego(1920,1080, 'Evolutron', bioma, individual)
 
 arcade.run()
-
