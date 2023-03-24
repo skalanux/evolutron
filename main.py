@@ -1,5 +1,5 @@
 import arcade
-from random import randint
+from random import randint,shuffle
 import time
 
 class Juego(arcade.Window):
@@ -9,34 +9,55 @@ class Juego(arcade.Window):
 
         self.vegetacion_ubicacion=[]
         self.start_time=time.time()
+        self.create_vegetacion(60)
+        self.fire=False
 
     def iniciar_pantalla(self):
         arcade.draw_text("Winter", 850, 985, arcade.color.AQUA, 50)
         arcade.draw_rectangle_filled(960, 640, 1920, 600, arcade.color.WHITE)
 
-    def draw_vegetacion(self,cantidad=10):
+    def create_vegetacion(self,cantidad=10):
         vegetacion = 0
         while vegetacion <= cantidad :
-            print(f"vegetacion = {vegetacion}")
+            #print(f"vegetacion = {vegetacion}")
             punto_y=randint(380,900)
             punto_x=randint(00,1900)
             vegetacion += 1
             self.vegetacion_ubicacion.append((punto_x,punto_y))
-            arcade.draw_rectangle_filled(punto_x, punto_y, 30, 60, arcade.color.GREEN)
+            
 
-    def eliminar_vegetacion(self):
-        pass
+    def draw_vegetation(self):
+        for coordenada in self.vegetacion_ubicacion:
+            arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
+
+    def on_draw(self):
+        arcade.start_render()
+        pantalla.iniciar_pantalla()
+        pantalla.draw_vegetation()
+        print(pantalla.vegetacion_ubicacion)
+        #arcade.finish_render()
+
+    def create_fire(self):
+        if len(self.vegetacion_ubicacion) > 0:
+            shuffle(self.vegetacion_ubicacion)
+            fire=self.vegetacion_ubicacion.pop()
+            print(fire)
 
     def on_update(self,delta_time):
-        print(delta_time)
+        if self.fire:
+            self.create_fire()
+
+
+    def on_key_press(self, symbol: int, modifiers: int):
+        if symbol == arcade.key.F:
+            self.fire=True
+
+        return super().on_key_press(symbol, modifiers)
+    
 
 
 
 pantalla=Juego(1920,1080, 'Evolutron')
-arcade.start_render()
-pantalla.iniciar_pantalla()
-pantalla.draw_vegetacion(40)
-print(pantalla.vegetacion_ubicacion)
-arcade.finish_render()
+
 arcade.run()
         
