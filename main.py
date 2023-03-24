@@ -1,6 +1,10 @@
-import arcade
-from random import randint,shuffle
 import time
+from itertools import cycle
+from random import randint,shuffle
+
+import arcade
+
+
 
 ARBOL="sprites/vegetation/arbol.png"
 HONGO="sprites/vegetation/honguito.png"
@@ -14,10 +18,11 @@ class Juego(arcade.Window):
         self.start_time=time.time()
         self.create_vegetacion(60)
         self.fire=False
-        self.plantas_sprites=[ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO]
+        self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
+
 
     def iniciar_pantalla(self):
-        arcade.draw_text("Winter", 850, 985, arcade.color.AQUA, 50)
+        arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
         arcade.draw_rectangle_filled(960, 640, 1920, 600, arcade.color.WHITE)
 
     def create_vegetacion(self,cantidad=10):
@@ -28,11 +33,13 @@ class Juego(arcade.Window):
             punto_x=randint(00,1900)
             vegetacion += 1
             self.vegetacion_ubicacion.append((punto_x,punto_y))
-            
+
 
     def draw_vegetation(self):
         for coordenada in self.vegetacion_ubicacion:
-            arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
+            arbol = arcade.Sprite(ARBOL, center_x=coordenada[0], center_y=coordenada[1], scale=2)
+            arbol.draw()
+            #arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
 
     def on_draw(self):
         arcade.start_render()
@@ -48,7 +55,7 @@ class Juego(arcade.Window):
             for i in range(plantas_moriran):
                 fire=self.vegetacion_ubicacion.pop()
         self.fire=False
-            
+
 
     def on_update(self,delta_time):
         if self.fire:
@@ -60,11 +67,11 @@ class Juego(arcade.Window):
             self.fire=True
 
         return super().on_key_press(symbol, modifiers)
-    
+
 
 
 
 pantalla=Juego(1920,1080, 'Evolutron')
 
 arcade.run()
-        
+
