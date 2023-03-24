@@ -47,9 +47,16 @@ class Juego(arcade.Window):
         pantalla.draw_vegetation()
         cant_plantas = len(self.vegetacion_ubicacion)
         survival = self.individual.get_survival(cant_plantas)
-        status_individual = "vivo" if survival==1 else "muerto"
+
+        print(survival)
+        if survival == 1:
+            status_individual = "vivo"
+        elif survival == 0.5:
+            status_individual = "sobrevivo"
+        else:
+            status_individual = "muero"
+
         arcade.draw_text(status_individual, 850, 85, arcade.color.AQUA, 50)
-        print(pantalla.vegetacion_ubicacion)
         #arcade.finish_render()
 
     def create_fire(self):
