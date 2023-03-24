@@ -20,7 +20,7 @@ class Juego(arcade.Window):
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
         self.create_vegetacion(160)
         self.fire=False
-        self.individual_type = Individual(herbivoro=True)
+        self.individual_type = Individual(herbivoro=False)
         self.cant_individual = 1
         self.reproducirse = False
         self.status_individual = 'vivo'
