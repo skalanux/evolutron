@@ -18,7 +18,7 @@ class Juego(arcade.Window):
         self.vegetacion_ubicacion=[]
         self.start_time=time.time()
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
-        self.create_vegetacion(60)
+        self.create_vegetacion(160)
         self.fire=False
         self.individual_type = Individual(herbivoro=True)
         self.cant_individual = 1
@@ -50,7 +50,9 @@ class Juego(arcade.Window):
         pantalla.draw_vegetation()
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
-        arcade.draw_text(self.cant_individual, 50, 85, arcade.color.AQUA, 50)
+        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 185, arcade.color.AQUA, 50)
+
+        arcade.draw_text(f"Individuos: {self.cant_individual}", 2, 135, arcade.color.AQUA, 50)
         #arcade.finish_render()
 
     def create_fire(self):
@@ -72,10 +74,8 @@ class Juego(arcade.Window):
             self.status_individual = "sobrevivo"
         else:
             self.status_individual = "extinto"
-        tiempo_transcurrido = time.time() - self.start_time
-        print(tiempo_transcurrido)
-        if(tiempo_transcurrido)>=10:
-            print("reproducirse")
+        self.tiempo_transcurrido = int(time.time() - self.start_time)
+        if(self.tiempo_transcurrido)>=10:
             if self.status_individual == 'vivo':
                 self.cant_individual += 1
             self.start_time = time.time()
@@ -90,8 +90,6 @@ class Juego(arcade.Window):
         if symbol == arcade.key.Q:
             arcade.exit()
         return super().on_key_press(symbol, modifiers)
-
-
 
 
 pantalla=Juego(1920,1080, 'Evolutron')
