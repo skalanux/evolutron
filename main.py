@@ -4,6 +4,7 @@ from random import randint,shuffle
 
 import arcade
 
+from individual import Individual
 
 
 ARBOL="sprites/vegetation/arbol.png"
@@ -19,6 +20,7 @@ class Juego(arcade.Window):
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
         self.create_vegetacion(60)
         self.fire=False
+        self.individual = Individual(herbivoro=True)
 
     def iniciar_pantalla(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
@@ -35,7 +37,7 @@ class Juego(arcade.Window):
 
     def draw_vegetation(self):
         for coordenada in self.vegetacion_ubicacion:
-            arbol = arcade.Sprite(coordenada[2], center_x=coordenada[0], center_y=coordenada[1], scale=2)
+            arbol = arcade.Sprite(coordenada[2], center_x=coordenada[0], center_y=coordenada[1], scale=4)
             arbol.draw()
             #arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
 
@@ -43,6 +45,10 @@ class Juego(arcade.Window):
         arcade.start_render()
         pantalla.iniciar_pantalla()
         pantalla.draw_vegetation()
+        cant_plantas = len(self.vegetacion_ubicacion)
+        survival = self.individual.get_survival(cant_plantas)
+        status_individual = "vivo" if survival==1 else "muerto"
+        arcade.draw_text(status_individual, 850, 85, arcade.color.AQUA, 50)
         print(pantalla.vegetacion_ubicacion)
         #arcade.finish_render()
 
