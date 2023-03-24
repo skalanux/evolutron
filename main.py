@@ -7,9 +7,8 @@ class Juego(arcade.Window):
 
     def iniciar_pantalla(self):
         arcade.start_render()
-        arcade.draw_text("draw_filled_rect", 363, 3, arcade.color.WHITE, 10)
-        arcade.draw_rectangle_filled(960, 540, 1920, 600, arcade.color.BLUSH)
-        #arcade.draw_rectangle_filled(420, 160, 20, 40, arcade.color.BLUSH, 45)
+        arcade.draw_text("Winter", 850, 985, arcade.color.AQUA, 50)
+        arcade.draw_rectangle_filled(960, 640, 1920, 600, arcade.color.WHITE)
         arcade.finish_render()
 
 
