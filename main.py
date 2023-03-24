@@ -39,9 +39,12 @@ class Juego(arcade.Window):
 
     def create_fire(self):
         if len(self.vegetacion_ubicacion) > 0:
+            plantas_moriran=int(len(self.vegetacion_ubicacion)/100 *10)
             shuffle(self.vegetacion_ubicacion)
-            fire=self.vegetacion_ubicacion.pop()
-            print(fire)
+            for i in range(plantas_moriran):
+                fire=self.vegetacion_ubicacion.pop()
+        self.fire=False
+            
 
     def on_update(self,delta_time):
         if self.fire:
