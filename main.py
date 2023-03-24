@@ -2,6 +2,9 @@ import arcade
 from random import randint,shuffle
 import time
 
+ARBOL="sprites/vegetation/arbol.png"
+HONGO="sprites/vegetation/honguito.png"
+
 class Juego(arcade.Window):
     def __init__(self, width, heigth, title):
         super().__init__(width, heigth, title, fullscreen=True)
@@ -11,6 +14,7 @@ class Juego(arcade.Window):
         self.start_time=time.time()
         self.create_vegetacion(60)
         self.fire=False
+        self.plantas_sprites=[ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO]
 
     def iniciar_pantalla(self):
         arcade.draw_text("Winter", 850, 985, arcade.color.AQUA, 50)
