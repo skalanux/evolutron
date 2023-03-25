@@ -33,6 +33,7 @@ class Juego(arcade.Window):
         self.lista_rana = arcade.SpriteList()
 
         self.fondo=arcade.Sprite("sprites/map/map.png",center_x=960,center_y=540,scale=1.1)
+        self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=50)
 
         for i in range(3):
             roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
