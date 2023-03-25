@@ -27,13 +27,14 @@ class Juego(arcade.Window):
         self.status_individual = 'vivo'
 
         self.lista_roca = arcade.SpriteList()
-
         self.lista_papa = arcade.SpriteList()
-
         self.lista_rana = arcade.SpriteList()
 
         self.fondo=arcade.Sprite("sprites/map/map.png",center_x=960,center_y=540,scale=1.1)
-        self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=50)
+        self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=70)
+        self.papa_mal=arcade.Sprite("sprites/PapasEstados/PapaMal.png",center_x=960,center_y=70)
+        self.papa_muerta=arcade.Sprite("sprites/PapasEstados/PapaMuerta.png",center_x=960,center_y=70)
+
 
         for i in range(3):
             roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
@@ -95,13 +96,24 @@ class Juego(arcade.Window):
         self.lista_roca.draw()
         self.draw_vegetation()
         self.lista_papa.draw()
+        self.cambiar_carita()
+        
+        
 
 
-        arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
+        arcade.draw_text(self.status_individual, 1020, 55, arcade.color.AQUA, 50,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
 
         arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
         #arcade.finish_render()
+
+    def cambiar_carita(self):
+        if self.status_individual == "vivo":
+            self.papa_bien.draw()
+        elif self.status_individual == "sobrevivo":
+            self.papa_mal.draw()
+        elif self.status_individual == "extinto":
+            self.papa_muerta.draw()
 
     def create_fire(self):
         if len(self.vegetacion_ubicacion) > 0:
