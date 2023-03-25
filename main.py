@@ -26,7 +26,6 @@ class Juego(arcade.Window):
         self.reproducirse = False
         self.status_individual = 'vivo'
 
-
         self.papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
         self.rana_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PresaRana/Rana*.png")), 100)
         self.roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
@@ -76,7 +75,7 @@ class Juego(arcade.Window):
         self.roca_sprite.draw()
         pantalla.draw_vegetation()
         self.papa_sprite.draw()
-        
+
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 185, arcade.color.AQUA, 50)
@@ -125,9 +124,8 @@ class Juego(arcade.Window):
         if symbol == arcade.key.Q:
             arcade.exit()
         return super().on_key_press(symbol, modifiers)
-    
+
     def load_images_sequence(self,filenames, frame_duration):
-        print(filenames)
         sprite = arcade.AnimatedTimeBasedSprite()
         for fname in filenames:
             texture = arcade.load_texture(fname)
