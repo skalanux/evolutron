@@ -16,6 +16,7 @@ SOBREVIVE="sobrevive"
 EXTINGUE="se extingue"
 
 
+dibujar = arcade.SpriteList()
 
 class Juego(arcade.Window):
     def __init__(self, width, heigth, title, bioma, individual):
@@ -92,17 +93,33 @@ class Juego(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         pantalla.dibujar_fondo()
-        self.lista_rana.draw()
-        self.lista_roca.draw()
-        self.lista_vegetation.draw()
-        self.lista_papa.draw()
+
+        # self.lista_vegetation.draw()
+
+        # self.lista_rana.draw(pixelated=False)
+        # self.lista_roca.draw(pixelated=False)
+
+        # self.lista_papa.draw()
+
+
+        dibujar.extend(self.lista_vegetation)
+        dibujar.extend(self.lista_rana)
+        dibujar.extend(self.lista_roca)
+        dibujar.extend(self.lista_papa)
+
+        dibujar.sort(key=lambda x: -x.center_y)
+        dibujar.draw(pixelated=True)
+
+        dibujar.clear()
+
+
         self.cambiar_carita()
 
         arcade.draw_text(self.status_individual, 1020, 50, arcade.color.AQUA, 50,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
 
         arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
-        #arcade.finish_render()
+        arcade.finish_render()
 
     def cambiar_carita(self):
         if self.status_individual == VIVE:
@@ -161,6 +178,7 @@ class Juego(arcade.Window):
 
     def load_images_sequence(self,filenames, frame_duration):
         sprite = arcade.AnimatedTimeBasedSprite()
+
         for fname in filenames:
             texture = arcade.load_texture(fname)
             sprite.textures.append(texture)
@@ -171,16 +189,11 @@ class Juego(arcade.Window):
         return sprite
 
     def move_individuos(self):
-        lista_papas = arcade.SpriteList()
-
         for papa in self.lista_papa:
             if papa.center_x >= 1920:
                 papa.center_x = 0
             else:
                 papa.center_x += 4
-            lista_papas.append(papa)
-
-        self.lista_papa = lista_papas
 
     def change_individuos(self, survival_type):
         if survival_type == VIVE:
