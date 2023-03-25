@@ -1,3 +1,4 @@
+import argparse
 import time
 from itertools import cycle
 from random import randint,shuffle
@@ -307,6 +308,41 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(herbivoro=False, carnivoro=True, has_hair=False, is_big=False, name="Pycampustropus")
-pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
+
+parser = argparse.ArgumentParser(
+                    prog='Evolutron',
+                    description='Salvando la especie',
+                    epilog='de vos mismo...')
+
+parser.add_argument('-b', '--bioma')
+parser.add_argument('-e', '--herbivoro',
+                    action='store_true')
+parser.add_argument('-c', '--carnivoro',
+                    action='store_true')
+parser.add_argument('-p', '--pelo',
+                    action='store_true')
+parser.add_argument('-g', '--big',
+                    action='store_true')
+
+
+args = parser.parse_args()
+
+if args.bioma == 'selva':
+    bioma = selva
+elif args.bioma == 'tundra':
+    bioma = tundra
+else:
+    bioma = bosque
+
+
+if args.bioma == 'selva':
+    bioma = selva
+elif args.bioma == 'tundra':
+    bioma = tundra
+else:
+    bioma = bosque
+
+
+individual = Individual(herbivoro=args.herbivoro, carnivoro=args.carnivoro, has_hair=args.pelo, is_big=args.big, name="Pycampustropus")
+pantalla = Juego(1920,1080, 'Evolutron', bioma, individual)
 arcade.run()
