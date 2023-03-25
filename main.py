@@ -5,12 +5,12 @@ import glob
 
 import arcade
 
-from bioma import Bioma, TIPO_CLIMA_CALIDO, TIPO_CLIMA_TEMPLADO, TIPO_CLIMA_FRIO
+from bioma import selva, bosque, tundra
 from individual import Individual
 
 
-ARBOL="sprites/vegetation/arbol.png"
-HONGO="sprites/vegetation/honguito.png"
+ARBOL="sprites/vegetation/arbol_{}.png"
+HONGO="sprites/vegetation/honguito_{}.png"
 VIVE="vive"
 SOBREVIVE="sobrevive"
 EXTINGUE="se extingue"
@@ -25,7 +25,9 @@ class Juego(arcade.Window):
 
         self.vegetacion_ubicacion=[]
         self.start_time=time.time()
-        self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
+        arbol_1 = ARBOL.format(bioma.tipo_clima)
+        arbol_2 = HONGO.format(bioma.tipo_clima)
+        self.plantas_sprites=cycle([arbol_1,arbol_1,arbol_1,arbol_1,arbol_1,arbol_1,arbol_1,arbol_2,arbol_2,arbol_2])
         self.fire=False
         self.individual_type = individual
         self.cant_individual = 1
@@ -37,7 +39,7 @@ class Juego(arcade.Window):
         self.lista_rana = arcade.SpriteList()
         self.lista_vegetation = arcade.SpriteList()
 
-        self.fondo=arcade.Sprite("sprites/map/map.png",center_x=960,center_y=540,scale=1.1)
+        self.fondo=arcade.Sprite(f"sprites/map/{bioma.tipo_clima}.png",center_x=960,center_y=540,scale=1.1)
         self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=70)
         self.papa_mal=arcade.Sprite("sprites/PapasEstados/PapaMal.png",center_x=960,center_y=70)
         self.papa_muerta=arcade.Sprite("sprites/PapasEstados/PapaMuerta.png",center_x=960,center_y=70)
@@ -152,7 +154,6 @@ class Juego(arcade.Window):
         else:
             self.status_individual = EXTINGUE
 
-        #if prev_status != self.status_individual:
         self.change_individuos(self.status_individual)
 
         self.tiempo_transcurrido = int(time.time() - self.start_time)
@@ -189,19 +190,27 @@ class Juego(arcade.Window):
         return sprite
 
     def move_individuos(self):
-        for papa in self.lista_papa:
-            if papa.center_x >= 1920:
-                papa.center_x = 0
-            else:
-                papa.center_x += 4
+        if self.status_individual == VIVE:
+            desplazamiento = 10
+        elif self.status_individual == SOBREVIVE:
+            desplazamiento = 5
+        else:
+            desplazamiento = 0
+
+        if desplazamiento != 0:
+            for papa in self.lista_papa:
+                if papa.center_x >= 1920:
+                    papa.center_x = 0
+                else:
+                    papa.center_x += 4
 
     def change_individuos(self, survival_type):
         if survival_type == VIVE:
-            color = (110,2,100,120)
+            color = (255,255,255,255)
         elif survival_type == SOBREVIVE:
-            color = (10,2,100,120)
+            color = (255,255,255,120)
         else:
-            color = (0,0,0,100)
+            color = (255,255,255,0)
 
         lista_papas = arcade.SpriteList()
 
@@ -212,13 +221,5 @@ class Juego(arcade.Window):
         self.lista_papa = lista_papas
 
 individual = Individual(herbivoro=True, has_hair=True)
-cant_plantas = 160
-tipo_clima = TIPO_CLIMA_FRIO
-has_predators = True
-cant_preys = 25
-nombre= "Bosque"
-
-bioma = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys,nombre)
-pantalla = Juego(1920,1080, 'Evolutron', bioma, individual)
-
+pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
 arcade.run()
