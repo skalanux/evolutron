@@ -155,7 +155,7 @@ class Juego(arcade.Window):
 
     def create_flood(self):
         if len(self.lista_rana) > 0:
-            ranas_moriran=int(len(self.lista_rana)/100 *10)
+            ranas_moriran=int(len(self.lista_rana)/100*20)
 
             for i in range(ranas_moriran):
                 rana_to_remove = self.lista_rana.pop()
@@ -169,7 +169,7 @@ class Juego(arcade.Window):
                 self.lista_fx.append(fire)
 
 
-        self.fire=False
+        self.flood=False
 
     def on_update(self,delta_time):
         cant_plantas = len(self.lista_vegetation)
@@ -266,6 +266,6 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(herbivoro=True, has_hair=True)
-pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
+individual = Individual(carnivoro=True, has_hair=False, is_big=True)
+pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
 arcade.run()

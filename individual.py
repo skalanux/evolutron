@@ -7,7 +7,7 @@ SURVIVAL_HERB_THRESHOLD_MAX_PLANTS = 40
 SURVIVAL_HERB_THRESHOLD_MIN_PLANTS = 20
 
 SURVIVAL_CARN_THRESHOLD_MAX_PREYS = 20
-SURVIVAL_CARN_THRESHOLD_MIN_PREYS = 40
+SURVIVAL_CARN_THRESHOLD_MIN_PREYS = 10
 
 
 @dataclass
@@ -52,6 +52,11 @@ class Individual:
             else:
                 survival_hair = 1
 
+        if self.is_big:
+            if has_predators:
+                survival_big = 0
+            else:
+                survival_big = 1
 
         reproduce = False
         sobrevive = False
