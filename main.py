@@ -29,6 +29,7 @@ class Juego(arcade.Window):
         self.lista_roca = arcade.SpriteList()
         self.lista_papa = arcade.SpriteList()
         self.lista_rana = arcade.SpriteList()
+        self.lista_vegetation = arcade.SpriteList()
 
         self.fondo=arcade.Sprite("sprites/map/map.png",center_x=960,center_y=540,scale=1.1)
         self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=70)
@@ -77,29 +78,20 @@ class Juego(arcade.Window):
     def create_vegetacion(self,cantidad=10):
         vegetacion = 0
         while vegetacion <= cantidad :
-            #print(f"vegetacion = {vegetacion}")
             punto_y=randint(380,900)
             punto_x=randint(00,1900)
-            self.vegetacion_ubicacion.append((punto_x,punto_y, next(self.plantas_sprites)))
+            arbol = arcade.Sprite(next(self.plantas_sprites), center_x=punto_x, center_y=punto_y, scale=0.5)
+            self.lista_vegetation.append(arbol)
             vegetacion += 1
-
-    def draw_vegetation(self):
-        for coordenada in self.vegetacion_ubicacion:
-            arbol = arcade.Sprite(coordenada[2], center_x=coordenada[0], center_y=coordenada[1], scale=0.5)
-            arbol.draw()
-            #arcade.draw_rectangle_filled(coordenada[0], coordenada[1], 30, 60, arcade.color.GREEN)
 
     def on_draw(self):
         arcade.start_render()
         pantalla.dibujar_fondo()
         self.lista_rana.draw()
         self.lista_roca.draw()
-        self.draw_vegetation()
+        self.lista_vegetation.draw()
         self.lista_papa.draw()
         self.cambiar_carita()
-        
-        
-
 
         arcade.draw_text(self.status_individual, 1020, 55, arcade.color.AQUA, 50,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
@@ -116,16 +108,15 @@ class Juego(arcade.Window):
             self.papa_muerta.draw()
 
     def create_fire(self):
-        if len(self.vegetacion_ubicacion) > 0:
-            plantas_moriran=int(len(self.vegetacion_ubicacion)/100 *10)
-            shuffle(self.vegetacion_ubicacion)
+        if len(self.lista_vegetation) > 0:
+            plantas_moriran=int(len(self.lista_vegetation)/100 *10)
             for i in range(plantas_moriran):
-                fire=self.vegetacion_ubicacion.pop()
+                self.lista_vegetation.pop()
         self.fire=False
 
 
     def on_update(self,delta_time):
-        cant_plantas = len(self.vegetacion_ubicacion)
+        cant_plantas = len(self.lista_vegetation)
         survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
 
         prev_status = self.status_individual
