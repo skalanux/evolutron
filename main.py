@@ -11,7 +11,7 @@ from individual import Individual
 
 ARBOL="sprites/vegetation/arbol_{}.png"
 HONGO="sprites/vegetation/honguito_{}.png"
-VIVE="vive"
+VIVE="se reproduce"
 SOBREVIVE="sobrevive"
 EXTINGUE="Kaput"
 
@@ -202,7 +202,8 @@ class Juego(arcade.Window):
 
     def on_update(self,delta_time):
         cant_plantas = len(self.lista_vegetation)
-        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima, self.bioma.cant_preys)
+        cant_presas = len(self.lista_rana)
+        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima, cant_presas)
 
         prev_status = self.status_individual
 
@@ -302,6 +303,6 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(herbivoro=True, has_hair=False, is_big=True, name="Pycampustropus")
+individual = Individual(herbivoro=False, carnivoro=True, has_hair=False, is_big=False, name="Pycampustropus")
 pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
 arcade.run()

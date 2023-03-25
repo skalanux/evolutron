@@ -21,7 +21,7 @@ class Bioma:
 cant_plantas = 160
 tipo_clima = TIPO_CLIMA_CALIDO
 has_predators = True
-cant_preys = 25
+cant_preys = 35
 nombre= "Selva"
 selva = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys,nombre)
 
@@ -29,7 +29,7 @@ selva = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys,nombre)
 cant_plantas = 120
 tipo_clima = TIPO_CLIMA_TEMPLADO
 has_predators = False
-cant_preys = 15
+cant_preys = 25
 nombre= "Bosque"
 bosque = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys,nombre)
 

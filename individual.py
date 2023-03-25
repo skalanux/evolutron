@@ -34,6 +34,8 @@ class Individual:
                 survival_herbivoro = 0.5
             else:
                 survival_herbivoro = 0
+        else:
+            survival_herbivoro = 0
 
         if self.carnivoro:
             presas_disponibles = cant_presas / cant_individuals
@@ -44,6 +46,8 @@ class Individual:
                 survival_carnivoro = 0.5
             else:
                 survival_carnivoro = 0
+        else:
+            survival_carnivoro = 0
 
         if self.has_hair:
             if tipo_clima == TIPO_CLIMA_CALIDO:
@@ -52,6 +56,15 @@ class Individual:
                 survival_hair = 0.5
             else:
                 survival_hair = 1
+        else:
+            if tipo_clima == TIPO_CLIMA_CALIDO:
+                survival_hair = 1
+            elif tipo_clima == TIPO_CLIMA_TEMPLADO:
+                survival_hair = 1
+            else:
+                survival_hair = 0
+
+
 
         if self.is_big:
             if has_predators:
@@ -63,9 +76,19 @@ class Individual:
         sobrevive = False
         muere = False
 
-        if survival_herbivoro == 1 and survival_carnivoro == 1 and survival_big == 1 and survival_hair == 1:
+
+        if survival_herbivoro == 1 or survival_carnivoro==1:
+            survival_comida = 1
+        elif survival_herbivoro >= 0.5 or survival_carnivoro >=0.5:
+            survival_comida = 0.5
+        else:
+            survival_comida = 0
+
+
+
+        if survival_comida == 1 and survival_big == 1 and survival_hair == 1:
             reproduce = True
-        elif survival_herbivoro >= 0.5 and survival_carnivoro >= 0.5 and survival_big >= 0.5 and survival_hair >= 0.5:
+        elif survival_comida >= 0.5 and survival_big >= 0.5 and survival_hair >= 0.5:
             sobrevive = True
         else:
             muere = True
