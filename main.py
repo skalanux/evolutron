@@ -27,25 +27,41 @@ class Juego(arcade.Window):
         self.status_individual = 'vivo'
 
         self.papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
-        self.rana_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PresaRana/Rana*.png")), 100)
-        self.roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
+        
+        
 
         self.papa_sprite.center_x = 194
         self.papa_sprite.center_y = 634
+       # self.papa_sprite.
         self.papa_sprite.scale = 0.5
 
-        self.rana_sprite.center_y = randint(380,900)
-        self.rana_sprite.center_x = randint(50,1900)
-        self.rana_sprite.scale = 0.5
+        
+        
+        self.lista_roca = arcade.SpriteList()
 
-        self.roca_sprite.center_x =randint(50,1900)
-        self.roca_sprite.center_y = randint(380,900)
-        self.roca_sprite.scale = 0.3
+        self.lista_papa = arcade.SpriteList()
+
+        self.lista_rana = arcade.SpriteList()
+
+        for i in range(3):
+            roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
+            roca_sprite.center_x =randint(50,1900)
+            roca_sprite.center_y = randint(380,900)
+            roca_sprite.scale = 0.3 
+            self.lista_roca.append(roca_sprite)
+
+        for i in range(bioma.cant_preys):
+            rana_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PresaRana/Rana*.png")), 100)
+            rana_sprite.center_y = randint(380,900)
+            rana_sprite.center_x = randint(50,1900)
+            rana_sprite.scale = 0.5
+            self.lista_rana.append(rana_sprite)
 
         # Defino bioma
         self.create_vegetacion(bioma.cant_plantas)
         self.has_predators = bioma.has_predators
         self.tipo_clima = bioma.tipo_clima
+
 
 
 
@@ -71,11 +87,11 @@ class Juego(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         pantalla.iniciar_pantalla()
-        self.rana_sprite.draw()
-        self.roca_sprite.draw()
-        pantalla.draw_vegetation()
+        self.lista_rana.draw()
+        self.lista_roca.draw()
+        self.draw_vegetation()
         self.papa_sprite.draw()
-
+        
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 185, arcade.color.AQUA, 50)
@@ -94,9 +110,8 @@ class Juego(arcade.Window):
 
     def on_update(self,delta_time):
         cant_plantas = len(self.vegetacion_ubicacion)
-        print(cant_plantas)
         survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
-        print(survival)
+
 
         if survival == 1:
             self.status_individual = "vivo"
@@ -115,8 +130,8 @@ class Juego(arcade.Window):
             self.create_fire()
 
         self.papa_sprite.update_animation(delta_time)
-        self.rana_sprite.update_animation(delta_time)
-        self.roca_sprite.update_animation(delta_time)
+        self.lista_rana.update_animation(delta_time)
+        self.lista_roca.update_animation(delta_time)
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.F:
@@ -139,9 +154,9 @@ class Juego(arcade.Window):
 
 individual = Individual(herbivoro=True)
 cant_plantas = 160
-tipo_clima = TIPO_CLIMA_TEMPLADO
+tipo_clima = TIPO_CLIMA_FRIO
 has_predators = True
-cant_preys = 100
+cant_preys = 25
 
 bioma = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys)
 pantalla = Juego(1920,1080, 'Evolutron', bioma, individual)
