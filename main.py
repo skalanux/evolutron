@@ -29,6 +29,7 @@ class Juego(arcade.Window):
         arbol_2 = HONGO.format(bioma.tipo_clima)
         self.plantas_sprites=cycle([arbol_1,arbol_1,arbol_1,arbol_1,arbol_1,arbol_1,arbol_1,arbol_2,arbol_2,arbol_2])
         self.fire=False
+        self.flood=False
         self.individual_type = individual
         self.cant_individual = 1
         self.reproducirse = False
@@ -152,6 +153,23 @@ class Juego(arcade.Window):
 
         self.fire=False
 
+    def create_flood(self):
+        if len(self.lista_rana) > 0:
+            ranas_moriran=int(len(self.lista_rana)/100 *10)
+
+            for i in range(ranas_moriran):
+                rana_to_remove = self.lista_rana.pop()
+
+                fire = self.load_images_sequence(sorted(glob.glob("sprites/Fuego/Fuego*.png")), 50)
+                fire.center_x = rana_to_remove.center_x
+                fire.center_y = rana_to_remove.center_y
+                fire.scale = 0.3
+                fire.ttl = 0
+
+                self.lista_fx.append(fire)
+
+
+        self.fire=False
 
     def on_update(self,delta_time):
         cant_plantas = len(self.lista_vegetation)
@@ -180,6 +198,10 @@ class Juego(arcade.Window):
         if self.fire:
             self.create_fire()
 
+        if self.flood:
+            self.create_flood()
+
+
         self.lista_papa.update_animation(delta_time)
         self.lista_rana.update_animation(delta_time)
         self.lista_roca.update_animation(delta_time)
@@ -193,6 +215,8 @@ class Juego(arcade.Window):
 
 
     def on_key_press(self, symbol: int, modifiers: int):
+        if symbol == arcade.key.D:
+            self.flood=True
         if symbol == arcade.key.F:
             self.fire=True
         if symbol == arcade.key.Q:
@@ -242,6 +266,6 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(carnivoro=True, has_hair=False)
-pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
+individual = Individual(herbivoro=True, has_hair=True)
+pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
 arcade.run()
