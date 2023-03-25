@@ -109,10 +109,11 @@ class Juego(arcade.Window):
         arcade.draw_text(f"Tiene Pelo: {tiene_pelo}", 1550, 50, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Es grande: {es_grande}", 1550, 20, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
 
+        arcade.draw_text(f"{self.individual_type.name}", 800, 15, arcade.color.ORANGE, 25,font_name="Kenney Pixel Square")
 
 
     def show_individual_status(self):
-        arcade.draw_text(self.status_individual, 800, 50, arcade.color.WHITE, 50,font_name="Kenney Pixel Square")
+        arcade.draw_text(self.status_individual, 800, 70, arcade.color.WHITE, 50,font_name="Kenney Pixel Square")
 
     def show_game_stats(self):
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.ORANGE, 40,font_name="Kenney Pixel Square")
@@ -131,7 +132,7 @@ class Juego(arcade.Window):
         dibujar.extend(self.lista_flood)
         dibujar.extend(self.lista_papa)
 
-   
+
         dibujar.draw(pixelated=True)
 
         dibujar.clear()
@@ -182,7 +183,7 @@ class Juego(arcade.Window):
                 flood.scale = 0.8
                 flood.ttl = -5
 
-                
+
                 self.lista_flood.append(flood)
 
 
@@ -290,6 +291,6 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(herbivoro=True, has_hair=False, is_big=True)
+individual = Individual(herbivoro=True, has_hair=False, is_big=True, name="Pycampustropus")
 pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
 arcade.run()

@@ -16,6 +16,7 @@ class Individual:
     carnivoro: bool = False
     has_hair: bool = False
     is_big: bool = False
+    name: str = ""
 
     def get_survival(self, cant_individuals, cant_plantas, has_predators, tipo_clima, cant_presas):
         survival_herbivoro = 1
