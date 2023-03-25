@@ -11,6 +11,11 @@ from individual import Individual
 
 ARBOL="sprites/vegetation/arbol.png"
 HONGO="sprites/vegetation/honguito.png"
+VIVE="vive"
+SOBREVIVE="sobrevive"
+EXTINGUE="se extingue"
+
+
 
 class Juego(arcade.Window):
     def __init__(self, width, heigth, title, bioma, individual):
@@ -24,7 +29,7 @@ class Juego(arcade.Window):
         self.individual_type = individual
         self.cant_individual = 1
         self.reproducirse = False
-        self.status_individual = 'vivo'
+        self.status_individual = VIVE
 
         self.lista_roca = arcade.SpriteList()
         self.lista_papa = arcade.SpriteList()
@@ -93,18 +98,18 @@ class Juego(arcade.Window):
         self.lista_papa.draw()
         self.cambiar_carita()
 
-        arcade.draw_text(self.status_individual, 1020, 55, arcade.color.AQUA, 50,font_name="Kenney Pixel Square")
+        arcade.draw_text(self.status_individual, 1020, 50, arcade.color.AQUA, 50,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
 
         arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
         #arcade.finish_render()
 
     def cambiar_carita(self):
-        if self.status_individual == "vivo":
+        if self.status_individual == VIVE:
             self.papa_bien.draw()
-        elif self.status_individual == "sobrevivo":
+        elif self.status_individual == SOBREVIVE:
             self.papa_mal.draw()
-        elif self.status_individual == "extinto":
+        elif self.status_individual == EXTINGUE:
             self.papa_muerta.draw()
 
     def create_fire(self):
@@ -124,18 +129,18 @@ class Juego(arcade.Window):
         self.move_individuos()
 
         if survival == 1:
-            self.status_individual = "vivo"
+            self.status_individual = VIVE
         elif survival == 0.5:
-            self.status_individual = "sobrevivo"
+            self.status_individual = SOBREVIVE
         else:
-            self.status_individual = "extinto"
+            self.status_individual = EXTINGUE
 
         #if prev_status != self.status_individual:
         self.change_individuos(self.status_individual)
 
         self.tiempo_transcurrido = int(time.time() - self.start_time)
         if(self.tiempo_transcurrido)>=10:
-            if self.status_individual == 'vivo':
+            if self.status_individual == VIVE:
                 self.cant_individual += 1
                 self.crear_individuo()
             self.start_time = time.time()
@@ -178,9 +183,9 @@ class Juego(arcade.Window):
         self.lista_papa = lista_papas
 
     def change_individuos(self, survival_type):
-        if survival_type == 'vivo':
+        if survival_type == VIVE:
             color = (110,2,100,120)
-        elif survival_type == 'sobrevive':
+        elif survival_type == SOBREVIVE:
             color = (10,2,100,120)
         else:
             color = (0,0,0,100)
