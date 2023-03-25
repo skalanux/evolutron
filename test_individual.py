@@ -11,7 +11,7 @@ def test_all_ok_reproduce():
                             cant_individuals=1,
                             cant_plantas=100,
                             has_predators=True,
-                            tipo_clima=TIPO_CLIMA_TEMPLADO)
+                            tipo_clima=TIPO_CLIMA_FRIO)
 
     print(survival)
     assert survival == 1

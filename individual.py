@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 
+from bioma import TIPO_CLIMA_CALIDO, TIPO_CLIMA_TEMPLADO, TIPO_CLIMA_FRIO
 
-TIPO_CLIMA_CALIDO = 'calido'
-TIPO_CLIMA_TEMPLADO = 'templado'
-TIPO_CLIMA_FRIO = 'frio'
 
 SURVIVAL_HERB_THRESHOLD_MAX_PLANTS = 40
 SURVIVAL_HERB_THRESHOLD_MIN_PLANTS = 20
@@ -32,6 +30,15 @@ class Individual:
                 survival_herbivoro = 0.5
             else:
                 survival_herbivoro = 0
+
+        if self.has_hair:
+            if tipo_clima == TIPO_CLIMA_CALIDO:
+                survival_hair = 0
+            elif tipo_clima == TIPO_CLIMA_TEMPLADO:
+                survival_hair = 0.5
+            else:
+                survival_hair = 1
+
 
         reproduce = False
         sobrevive = False
