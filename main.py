@@ -26,22 +26,13 @@ class Juego(arcade.Window):
         self.reproducirse = False
         self.status_individual = 'vivo'
 
-        self.papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
-        
-        
-
-        self.papa_sprite.center_x = 194
-        self.papa_sprite.center_y = 634
-       # self.papa_sprite.
-        self.papa_sprite.scale = 0.5
-
-        
-        
         self.lista_roca = arcade.SpriteList()
 
         self.lista_papa = arcade.SpriteList()
 
         self.lista_rana = arcade.SpriteList()
+
+        self.fondo=arcade.Sprite("sprites/map/map.png",center_x=960,center_y=540,scale=1.1)
 
         for i in range(3):
             roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
@@ -57,17 +48,30 @@ class Juego(arcade.Window):
             rana_sprite.scale = 0.5
             self.lista_rana.append(rana_sprite)
 
+
+        self.crear_individuo()
+        
+
         # Defino bioma
         self.create_vegetacion(bioma.cant_plantas)
         self.has_predators = bioma.has_predators
         self.tipo_clima = bioma.tipo_clima
 
 
+    def crear_individuo(self):
+        papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
+        self.lista_papa.append(papa_sprite)
+    
+        papa_sprite.center_x = randint(125,355) 
+        papa_sprite.center_y = randint(200,350) 
+        papa_sprite.scale = 0.5
 
 
-    def iniciar_pantalla(self):
+
+    def dibujar_fondo(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
-        arcade.draw_rectangle_filled(960, 640, 1920, 600, arcade.color.WHITE)
+        self.fondo.draw()
+        #arcade.draw_rectangle_filled(960, 540, 1920, 800, arcade.color.WHITE)
 
     def create_vegetacion(self,cantidad=10):
         vegetacion = 0
@@ -86,17 +90,17 @@ class Juego(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        pantalla.iniciar_pantalla()
+        pantalla.dibujar_fondo()
         self.lista_rana.draw()
         self.lista_roca.draw()
         self.draw_vegetation()
-        self.papa_sprite.draw()
+        self.lista_papa.draw()
         
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
-        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 185, arcade.color.AQUA, 50)
+        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 50)
 
-        arcade.draw_text(f"Individuos: {self.cant_individual}", 2, 135, arcade.color.AQUA, 50)
+        arcade.draw_text(f"Individuos: {self.cant_individual}", 2, 20, arcade.color.AQUA, 50)
         #arcade.finish_render()
 
     def create_fire(self):
@@ -112,7 +116,6 @@ class Juego(arcade.Window):
         cant_plantas = len(self.vegetacion_ubicacion)
         survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
 
-
         if survival == 1:
             self.status_individual = "vivo"
         elif survival == 0.5:
@@ -124,12 +127,13 @@ class Juego(arcade.Window):
         if(self.tiempo_transcurrido)>=10:
             if self.status_individual == 'vivo':
                 self.cant_individual += 1
+                self.crear_individuo()
             self.start_time = time.time()
 
         if self.fire:
             self.create_fire()
 
-        self.papa_sprite.update_animation(delta_time)
+        self.lista_papa.update_animation(delta_time)
         self.lista_rana.update_animation(delta_time)
         self.lista_roca.update_animation(delta_time)
 
