@@ -38,6 +38,7 @@ class Juego(arcade.Window):
         self.lista_papa = arcade.SpriteList()
         self.lista_rana = arcade.SpriteList()
         self.lista_vegetation = arcade.SpriteList()
+        self.lista_fx = arcade.SpriteList()
 
         self.fondo=arcade.Sprite(f"sprites/map/{bioma.tipo_clima}.png",center_x=960,center_y=540,scale=1.1)
         self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=70)
@@ -80,7 +81,7 @@ class Juego(arcade.Window):
 
     def dibujar_fondo(self):
         arcade.draw_text(self.nombre_bioma, 850, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
-        self.fondo.draw()
+        self.fondo.draw(pixelated=True)
         #arcade.draw_rectangle_filled(960, 540, 1920, 800, arcade.color.WHITE)
 
     def create_vegetacion(self,cantidad=10):
@@ -108,6 +109,7 @@ class Juego(arcade.Window):
         dibujar.extend(self.lista_rana)
         dibujar.extend(self.lista_roca)
         dibujar.extend(self.lista_papa)
+        dibujar.extend(self.lista_fx)
 
         dibujar.sort(key=lambda x: -x.center_y)
         dibujar.draw(pixelated=True)
@@ -134,8 +136,19 @@ class Juego(arcade.Window):
     def create_fire(self):
         if len(self.lista_vegetation) > 0:
             plantas_moriran=int(len(self.lista_vegetation)/100 *10)
+
             for i in range(plantas_moriran):
-                self.lista_vegetation.pop()
+                plant_to_remove = self.lista_vegetation.pop()
+
+                fire = self.load_images_sequence(sorted(glob.glob("sprites/Fuego/Fuego*.png")), 50)
+                fire.center_x = plant_to_remove.center_x
+                fire.center_y = plant_to_remove.center_y
+                fire.scale = 0.3
+                fire.ttl = 0
+
+                self.lista_fx.append(fire)
+
+
         self.fire=False
 
 
@@ -169,6 +182,14 @@ class Juego(arcade.Window):
         self.lista_papa.update_animation(delta_time)
         self.lista_rana.update_animation(delta_time)
         self.lista_roca.update_animation(delta_time)
+        self.lista_fx.update_animation(delta_time)
+
+        for fx in self.lista_fx:
+            if fx.ttl > 1: # en un segundo se elimina.
+                self.lista_fx.remove(fx)
+            else:
+                fx.ttl += delta_time
+
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.F:
