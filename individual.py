@@ -1,20 +1,56 @@
 from dataclasses import dataclass
 
 
+TIPO_CLIMA_CALIDO = 'calido'
+TIPO_CLIMA_TEMPLADO = 'templado'
+TIPO_CLIMA_FRIO = 'frio'
+
+SURVIVAL_HERB_THRESHOLD_MAX_PLANTS = 40
+SURVIVAL_HERB_THRESHOLD_MIN_PLANTS = 20
+
 
 @dataclass
 class Individual:
-    herbivoro: bool
+    herbivoro: bool = True
+    carnivoro: bool = True
+    has_hair: bool = True
+    is_big: bool = True
 
-    def get_survival(self, cant_individuals, cant_plantas):
-        plantas_disponibles = cant_plantas / cant_individuals
+    def get_survival(self, cant_individuals, cant_plantas, has_predators, tipo_clima):
+        survival_herbivoro = 1
+        survival_carnivoro = 1
+        survival_big = 1
+        survival_hair = 1
 
-        if plantas_disponibles > 40:
+
+        if self.herbivoro:
+            plantas_disponibles = cant_plantas / cant_individuals
+
+            if plantas_disponibles > SURVIVAL_HERB_THRESHOLD_MAX_PLANTS:
+                survival_herbivoro = 1
+            elif plantas_disponibles <=SURVIVAL_HERB_THRESHOLD_MAX_PLANTS and plantas_disponibles > SURVIVAL_HERB_THRESHOLD_MIN_PLANTS:
+                survival_herbivoro = 0.5
+            else:
+                survival_herbivoro = 0
+
+        reproduce = False
+        sobrevive = False
+        muere = False
+
+        if survival_herbivoro == 1 and survival_carnivoro == 1 and survival_big == 1 and survival_hair == 1:
+            reproduce = True
+        elif survival_herbivoro >= 0.5 and survival_carnivoro >= 0.5 and survival_big >= 0.5 and survival_hair >= 0.5:
+            sobrevive = True
+        else:
+            muere = True
+
+        if reproduce:
             survival = 1
-        elif plantas_disponibles <=40 and plantas_disponibles > 20:
+        elif sobrevive:
             survival = 0.5
         else:
             survival = 0
 
         return survival
+
 

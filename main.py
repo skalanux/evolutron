@@ -5,6 +5,7 @@ import glob
 
 import arcade
 
+from bioma import Bioma, TIPO_CLIMA_CALIDO, TIPO_CLIMA_TEMPLADO, TIPO_CLIMA_FRIO
 from individual import Individual
 
 
@@ -12,20 +13,20 @@ ARBOL="sprites/vegetation/arbol.png"
 HONGO="sprites/vegetation/honguito.png"
 
 class Juego(arcade.Window):
-    def __init__(self, width, heigth, title):
+    def __init__(self, width, heigth, title, bioma, individual):
         super().__init__(width, heigth, title, fullscreen=True)
         arcade.set_background_color(arcade.color.EERIE_BLACK)
 
         self.vegetacion_ubicacion=[]
         self.start_time=time.time()
         self.plantas_sprites=cycle([ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,ARBOL,HONGO,HONGO,HONGO])
-        self.create_vegetacion(60)
         self.fire=False
-        self.individual_type = Individual(herbivoro=True)
+        self.individual_type = individual
         self.cant_individual = 1
         self.reproducirse = False
         self.status_individual = 'vivo'
 
+<<<<<<< HEAD
         self.papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
         self.rana_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PresaRana/Rana*.png")), 100)
         self.roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
@@ -41,6 +42,13 @@ class Juego(arcade.Window):
         self.roca_sprite.center_x = 552
         self.roca_sprite.center_y = 552
         self.roca_sprite.scale = 0.3
+
+        # Defino bioma
+        self.create_vegetacion(bioma.cant_plantas)
+        self.has_predators = bioma.has_predators
+        self.tipo_clima = bioma.tipo_clima
+
+
 
     def iniciar_pantalla(self):
         arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
@@ -70,7 +78,9 @@ class Juego(arcade.Window):
         self.roca_sprite.draw()
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
-        arcade.draw_text(self.cant_individual, 50, 85, arcade.color.AQUA, 50)
+        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 185, arcade.color.AQUA, 50)
+
+        arcade.draw_text(f"Individuos: {self.cant_individual}", 2, 135, arcade.color.AQUA, 50)
         #arcade.finish_render()
 
     def create_fire(self):
@@ -84,7 +94,9 @@ class Juego(arcade.Window):
 
     def on_update(self,delta_time):
         cant_plantas = len(self.vegetacion_ubicacion)
-        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas)
+        print(cant_plantas)
+        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
+        print(survival)
 
         if survival == 1:
             self.status_individual = "vivo"
@@ -92,10 +104,9 @@ class Juego(arcade.Window):
             self.status_individual = "sobrevivo"
         else:
             self.status_individual = "extinto"
-        tiempo_transcurrido = time.time() - self.start_time
-        print(tiempo_transcurrido)
-        if(tiempo_transcurrido)>=10:
-            print("reproducirse")
+
+        self.tiempo_transcurrido = int(time.time() - self.start_time)
+        if(self.tiempo_transcurrido)>=10:
             if self.status_individual == 'vivo':
                 self.cant_individual += 1
             self.start_time = time.time()
@@ -127,9 +138,13 @@ class Juego(arcade.Window):
         return sprite
 
 
+individual = Individual(herbivoro=True)
+cant_plantas = 160
+tipo_clima = TIPO_CLIMA_TEMPLADO
+has_predators = True
+cant_preys = 100
 
-
-pantalla=Juego(1920,1080, 'Evolutron')
+bioma = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys)
+pantalla = Juego(1920,1080, 'Evolutron', bioma, individual)
 
 arcade.run()
-
