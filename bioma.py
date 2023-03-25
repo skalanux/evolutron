@@ -33,6 +33,7 @@ cant_preys = 15
 nombre= "Bosque"
 bosque = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys,nombre)
 
+
 cant_plantas = 50
 tipo_clima = TIPO_CLIMA_FRIO
 has_predators = True

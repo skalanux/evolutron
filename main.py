@@ -242,5 +242,5 @@ class Juego(arcade.Window):
         self.lista_papa = lista_papas
 
 individual = Individual(herbivoro=True, has_hair=True)
-pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
+pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
 arcade.run()
