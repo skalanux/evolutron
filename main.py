@@ -139,7 +139,8 @@ class Juego(arcade.Window):
 
         dibujar.extend(self.lista_vegetation)
         dibujar.extend(self.lista_rana)
-        dibujar.extend(self.lista_roca)
+        if self.bioma.has_predators:
+            dibujar.extend(self.lista_roca)
         dibujar.extend(self.lista_fx)
         dibujar.sort(key=lambda x: -x.center_y)
         dibujar.extend(self.lista_flood)
@@ -307,5 +308,5 @@ class Juego(arcade.Window):
         self.lista_papa = lista_papas
 
 individual = Individual(herbivoro=False, carnivoro=True, has_hair=False, is_big=False, name="Pycampustropus")
-pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
+pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
 arcade.run()
