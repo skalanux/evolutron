@@ -91,14 +91,14 @@ class Juego(arcade.Window):
         arcade.draw_text(self.nombre_bioma, 150, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
         tipo_clima = self.bioma.tipo_clima
         tiene_depredadores = "si" if self.bioma.has_predators else "no"
-        cant_presas = self.bioma.cant_preys
-        cant_plantas = self.bioma.cant_plantas
+        cant_presas_orig = self.bioma.cant_preys
+        cant_plantas_orig = self.bioma.cant_plantas
 
-        cant_plantas = len(self.lista_vegetation)
-        cant_presas = len(self.lista_rana)
+        cant_plantas_actual = len(self.lista_vegetation)
+        cant_presas_actual = len(self.lista_rana)
 
-        arcade.draw_text(f"Cantidad de presas: {cant_presas}", 1550, 1040, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
-        arcade.draw_text(f"Vegetación: {cant_plantas}", 1550, 1010, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Cantidad de presas: {cant_presas_actual} / {cant_presas_orig}", 1550, 1040, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Vegetación: {cant_plantas_actual} / {cant_plantas_orig}", 1550, 1010, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Clima: {tipo_clima}", 1550, 980, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
         arcade.draw_text(f"Depredadores: {tiene_depredadores}", 1550, 950, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
 
