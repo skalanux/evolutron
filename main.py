@@ -113,11 +113,12 @@ class Juego(arcade.Window):
         dibujar.extend(self.lista_vegetation)
         dibujar.extend(self.lista_rana)
         dibujar.extend(self.lista_roca)
-        dibujar.extend(self.lista_papa)
         dibujar.extend(self.lista_fx)
-        dibujar.extend(self.lista_flood)
-
         dibujar.sort(key=lambda x: -x.center_y)
+        dibujar.extend(self.lista_flood)
+        dibujar.extend(self.lista_papa)
+
+   
         dibujar.draw(pixelated=True)
 
         dibujar.clear()
