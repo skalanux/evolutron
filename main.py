@@ -38,7 +38,7 @@ class Juego(arcade.Window):
             roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
             roca_sprite.center_x =randint(50,1900)
             roca_sprite.center_y = randint(380,900)
-            roca_sprite.scale = 0.3 
+            roca_sprite.scale = 0.3
             self.lista_roca.append(roca_sprite)
 
         for i in range(bioma.cant_preys):
@@ -50,7 +50,7 @@ class Juego(arcade.Window):
 
 
         self.crear_individuo()
-        
+
 
         # Defino bioma
         self.create_vegetacion(bioma.cant_plantas)
@@ -62,12 +62,10 @@ class Juego(arcade.Window):
     def crear_individuo(self):
         papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
         self.lista_papa.append(papa_sprite)
-    
-        papa_sprite.center_x = randint(125,355) 
-        papa_sprite.center_y = randint(200,350) 
+
+        papa_sprite.center_x = randint(125,355)
+        papa_sprite.center_y = randint(200,350)
         papa_sprite.scale = 0.5
-
-
 
     def dibujar_fondo(self):
         arcade.draw_text(self.nombre_bioma, 850, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
@@ -96,7 +94,7 @@ class Juego(arcade.Window):
         self.lista_roca.draw()
         self.draw_vegetation()
         self.lista_papa.draw()
-        
+
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
@@ -117,6 +115,7 @@ class Juego(arcade.Window):
         cant_plantas = len(self.vegetacion_ubicacion)
         survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
 
+        self.move_individuos()
         if survival == 1:
             self.status_individual = "vivo"
         elif survival == 0.5:
@@ -134,7 +133,7 @@ class Juego(arcade.Window):
         if self.fire:
             self.create_fire()
 
-        self.lista_papa.update_animation(delta_time)
+        self.lista_papa.update_animation(delta_time*2)
         self.lista_rana.update_animation(delta_time)
         self.lista_roca.update_animation(delta_time)
 
@@ -156,8 +155,19 @@ class Juego(arcade.Window):
         #sprite.texture = sprite.textures[0]
         return sprite
 
+    def move_individuos(self):
+        lista_papas = arcade.SpriteList()
 
-individual = Individual(herbivoro=True)
+        for papa in self.lista_papa:
+            if papa.center_x >= 1920:
+                papa.center_x = 0
+            else:
+                papa.center_x += 4
+            lista_papas.append(papa)
+
+        self.lista_papa = lista_papas
+
+individual = Individual(herbivoro=True, has_hair=True)
 cant_plantas = 160
 tipo_clima = TIPO_CLIMA_FRIO
 has_predators = True
