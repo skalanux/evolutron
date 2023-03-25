@@ -56,6 +56,7 @@ class Juego(arcade.Window):
         self.create_vegetacion(bioma.cant_plantas)
         self.has_predators = bioma.has_predators
         self.tipo_clima = bioma.tipo_clima
+        self.nombre_bioma=bioma.nombre
 
 
     def crear_individuo(self):
@@ -69,7 +70,7 @@ class Juego(arcade.Window):
 
 
     def dibujar_fondo(self):
-        arcade.draw_text("Selva", 850, 985, arcade.color.AQUA, 50)
+        arcade.draw_text(self.nombre_bioma, 850, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
         self.fondo.draw()
         #arcade.draw_rectangle_filled(960, 540, 1920, 800, arcade.color.WHITE)
 
@@ -98,9 +99,9 @@ class Juego(arcade.Window):
         
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
-        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 50)
+        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
 
-        arcade.draw_text(f"Individuos: {self.cant_individual}", 2, 20, arcade.color.AQUA, 50)
+        arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
         #arcade.finish_render()
 
     def create_fire(self):
@@ -161,8 +162,9 @@ cant_plantas = 160
 tipo_clima = TIPO_CLIMA_FRIO
 has_predators = True
 cant_preys = 25
+nombre= "Bosque"
 
-bioma = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys)
+bioma = Bioma(cant_plantas, tipo_clima, has_predators, cant_preys,nombre)
 pantalla = Juego(1920,1080, 'Evolutron', bioma, individual)
 
 arcade.run()
