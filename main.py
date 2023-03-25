@@ -62,11 +62,11 @@ class Juego(arcade.Window):
 
     def crear_individuo(self):
         papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
-        self.lista_papa.append(papa_sprite)
 
         papa_sprite.center_x = randint(125,355)
         papa_sprite.center_y = randint(200,350)
         papa_sprite.scale = 0.5
+        self.lista_papa.append(papa_sprite)
 
     def dibujar_fondo(self):
         arcade.draw_text(self.nombre_bioma, 850, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
@@ -116,13 +116,19 @@ class Juego(arcade.Window):
         cant_plantas = len(self.vegetacion_ubicacion)
         survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
 
+        prev_status = self.status_individual
+
         self.move_individuos()
+
         if survival == 1:
             self.status_individual = "vivo"
         elif survival == 0.5:
             self.status_individual = "sobrevivo"
         else:
             self.status_individual = "extinto"
+
+        #if prev_status != self.status_individual:
+        self.change_individuos(self.status_individual)
 
         self.tiempo_transcurrido = int(time.time() - self.start_time)
         if(self.tiempo_transcurrido)>=10:
@@ -134,7 +140,7 @@ class Juego(arcade.Window):
         if self.fire:
             self.create_fire()
 
-        self.lista_papa.update_animation(delta_time*2)
+        self.lista_papa.update_animation(delta_time)
         self.lista_rana.update_animation(delta_time)
         self.lista_roca.update_animation(delta_time)
 
@@ -164,6 +170,22 @@ class Juego(arcade.Window):
                 papa.center_x = 0
             else:
                 papa.center_x += 4
+            lista_papas.append(papa)
+
+        self.lista_papa = lista_papas
+
+    def change_individuos(self, survival_type):
+        if survival_type == 'vivo':
+            color = (110,2,100,120)
+        elif survival_type == 'sobrevive':
+            color = (10,2,100,120)
+        else:
+            color = (0,0,0,100)
+
+        lista_papas = arcade.SpriteList()
+
+        for papa in self.lista_papa:
+            papa.color = color
             lista_papas.append(papa)
 
         self.lista_papa = lista_papas
