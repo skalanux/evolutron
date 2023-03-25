@@ -11,7 +11,7 @@ class Bioma:
     cant_plantas: int
     tipo_clima: str
     has_predators: bool
-    cant_preys: bool = True
+    cant_preys: int 
 
     def reset():
         ...

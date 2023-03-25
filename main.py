@@ -26,7 +26,7 @@ class Juego(arcade.Window):
         self.reproducirse = False
         self.status_individual = 'vivo'
 
-<<<<<<< HEAD
+
         self.papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
         self.rana_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PresaRana/Rana*.png")), 100)
         self.roca_sprite = self.load_images_sequence(sorted(glob.glob("sprites/DepredadorRoca/Roca*.png")), 100)
@@ -35,12 +35,12 @@ class Juego(arcade.Window):
         self.papa_sprite.center_y = 634
         self.papa_sprite.scale = 0.5
 
-        self.rana_sprite.center_y = 368
-        self.rana_sprite.center_x = 368
+        self.rana_sprite.center_y = randint(380,900)
+        self.rana_sprite.center_x = randint(50,1900)
         self.rana_sprite.scale = 0.5
 
-        self.roca_sprite.center_x = 552
-        self.roca_sprite.center_y = 552
+        self.roca_sprite.center_x =randint(50,1900)
+        self.roca_sprite.center_y = randint(380,900)
         self.roca_sprite.scale = 0.3
 
         # Defino bioma
@@ -72,10 +72,11 @@ class Juego(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         pantalla.iniciar_pantalla()
-        pantalla.draw_vegetation()
-        self.papa_sprite.draw()
         self.rana_sprite.draw()
         self.roca_sprite.draw()
+        pantalla.draw_vegetation()
+        self.papa_sprite.draw()
+        
 
         arcade.draw_text(self.status_individual, 850, 85, arcade.color.AQUA, 50)
         arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 185, arcade.color.AQUA, 50)
