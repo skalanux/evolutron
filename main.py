@@ -65,6 +65,7 @@ class Juego(arcade.Window):
 
 
         # Defino bioma
+        self.bioma = bioma
         self.create_vegetacion(bioma.cant_plantas)
         self.has_predators = bioma.has_predators
         self.tipo_clima = bioma.tipo_clima
@@ -154,7 +155,7 @@ class Juego(arcade.Window):
 
     def on_update(self,delta_time):
         cant_plantas = len(self.lista_vegetation)
-        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima)
+        survival = self.individual_type.get_survival(self.cant_individual, cant_plantas, self.has_predators, self.tipo_clima, self.bioma.cant_preys)
 
         prev_status = self.status_individual
 
@@ -212,7 +213,7 @@ class Juego(arcade.Window):
 
     def move_individuos(self):
         if self.status_individual == VIVE:
-            desplazamiento = 10
+            desplazamiento = 6
         elif self.status_individual == SOBREVIVE:
             desplazamiento = 5
         else:
@@ -223,7 +224,7 @@ class Juego(arcade.Window):
                 if papa.center_x >= 1920:
                     papa.center_x = 0
                 else:
-                    papa.center_x += 4
+                    papa.center_x += desplazamiento
 
     def change_individuos(self, survival_type):
         if survival_type == VIVE:
@@ -241,6 +242,6 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(herbivoro=True, has_hair=True)
+individual = Individual(carnivoro=True, has_hair=False)
 pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
 arcade.run()
