@@ -13,7 +13,7 @@ ARBOL="sprites/vegetation/arbol_{}.png"
 HONGO="sprites/vegetation/honguito_{}.png"
 VIVE="vive"
 SOBREVIVE="sobrevive"
-EXTINGUE="se extingue"
+EXTINGUE="Kaput"
 
 
 dibujar = arcade.SpriteList()
@@ -76,9 +76,11 @@ class Juego(arcade.Window):
     def crear_individuo(self):
         papa_sprite = self.load_images_sequence(sorted(glob.glob("sprites/PapaPlayer/Papa*.png")), 100)
 
+        papa_scale = 1 if self.individual_type.is_big else 0.5
+
         papa_sprite.center_x = randint(125,355)
         papa_sprite.center_y = randint(200,350)
-        papa_sprite.scale = 0.5
+        papa_sprite.scale = papa_scale
         self.lista_papa.append(papa_sprite)
 
     def dibujar_fondo(self):
@@ -121,10 +123,10 @@ class Juego(arcade.Window):
 
         self.cambiar_carita()
 
-        arcade.draw_text(self.status_individual, 1020, 50, arcade.color.AQUA, 50,font_name="Kenney Pixel Square")
-        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
+        arcade.draw_text(self.status_individual, 1020, 50, arcade.color.WHITE, 50,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.ORANGE, 40,font_name="Kenney Pixel Square")
 
-        arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.AQUA, 40,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.WHITE, 40,font_name="Kenney Pixel Square")
         arcade.finish_render()
 
     def cambiar_carita(self):
@@ -266,6 +268,6 @@ class Juego(arcade.Window):
 
         self.lista_papa = lista_papas
 
-individual = Individual(carnivoro=True, has_hair=False, is_big=True)
-pantalla = Juego(1920,1080, 'Evolutron', selva, individual)
+individual = Individual(herbivoro=True, has_hair=False, is_big=True)
+pantalla = Juego(1920,1080, 'Evolutron', bosque, individual)
 arcade.run()
