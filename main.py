@@ -85,9 +85,19 @@ class Juego(arcade.Window):
         self.lista_papa.append(papa_sprite)
 
     def dibujar_fondo(self):
-        arcade.draw_text(self.nombre_bioma, 850, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
         self.fondo.draw(pixelated=True)
-        #arcade.draw_rectangle_filled(960, 540, 1920, 800, arcade.color.WHITE)
+
+    def show_bioma_attrs(self):
+        arcade.draw_text(self.nombre_bioma, 150, 985, arcade.color.ORANGE, 50,font_name="Kenney Pixel Square")
+        tipo_clima = self.bioma.tipo_clima
+        tiene_depredadores = "si" if self.bioma.has_predators else "no"
+        cant_presas = self.bioma.cant_preys
+        cant_plantas = self.bioma.cant_plantas
+
+        arcade.draw_text(f"Cantidad de presas: {cant_presas}", 1550, 1040, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Vegetación: {cant_plantas}", 1550, 1010, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Clima: {tipo_clima}", 1550, 980, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Depredadores: {tiene_depredadores}", 1550, 950, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
 
     def create_vegetacion(self,cantidad=10):
         vegetacion = 0
@@ -141,6 +151,7 @@ class Juego(arcade.Window):
         self.show_individual_status()
         self.show_individual_attributes()
         self.show_game_stats()
+        self.show_bioma_attrs()
 
         arcade.finish_render()
     def cambiar_carita(self):
