@@ -40,6 +40,7 @@ class Juego(arcade.Window):
         self.lista_rana = arcade.SpriteList()
         self.lista_vegetation = arcade.SpriteList()
         self.lista_fx = arcade.SpriteList()
+        self.lista_flood = arcade.SpriteList()
 
         self.fondo=arcade.Sprite(f"sprites/map/{bioma.tipo_clima}.png",center_x=960,center_y=540,scale=1.1)
         self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=70)
@@ -114,6 +115,7 @@ class Juego(arcade.Window):
         dibujar.extend(self.lista_roca)
         dibujar.extend(self.lista_papa)
         dibujar.extend(self.lista_fx)
+        dibujar.extend(self.lista_flood)
 
         dibujar.sort(key=lambda x: -x.center_y)
         dibujar.draw(pixelated=True)
@@ -162,13 +164,15 @@ class Juego(arcade.Window):
             for i in range(ranas_moriran):
                 rana_to_remove = self.lista_rana.pop()
 
-                fire = self.load_images_sequence(sorted(glob.glob("sprites/Fuego/Fuego*.png")), 50)
-                fire.center_x = rana_to_remove.center_x
-                fire.center_y = rana_to_remove.center_y
-                fire.scale = 0.3
-                fire.ttl = 0
+                flood = self.load_images_sequence(sorted(glob.glob("sprites/ola.png")), 50)
+                flood.center_x = 0
+                flood.center_y = 600
+#               flood.center_y = rana_to_remove.center_y
+                flood.scale = 0.8
+                flood.ttl = -5
 
-                self.lista_fx.append(fire)
+                
+                self.lista_flood.append(flood)
 
 
         self.flood=False
@@ -208,6 +212,7 @@ class Juego(arcade.Window):
         self.lista_rana.update_animation(delta_time)
         self.lista_roca.update_animation(delta_time)
         self.lista_fx.update_animation(delta_time)
+        self.lista_flood.update_animation(delta_time)
 
         for fx in self.lista_fx:
             if fx.ttl > 1: # en un segundo se elimina.
@@ -215,6 +220,12 @@ class Juego(arcade.Window):
             else:
                 fx.ttl += delta_time
 
+        for fx in self.lista_flood:
+            if fx.ttl > 1: # en un segundo se elimina.
+                self.lista_flood.remove(fx)
+            else:
+                fx.ttl += delta_time
+                fx.center_x += 20
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.D:
