@@ -41,10 +41,10 @@ class Juego(arcade.Window):
         self.lista_vegetation = arcade.SpriteList()
         self.lista_fx = arcade.SpriteList()
 
-        self.fondo=arcade.Sprite(f"sprites/map/{bioma.tipo_clima}.png",center_x=960,center_y=540,scale=1.1)
-        self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=960,center_y=70)
-        self.papa_mal=arcade.Sprite("sprites/PapasEstados/PapaMal.png",center_x=960,center_y=70)
-        self.papa_muerta=arcade.Sprite("sprites/PapasEstados/PapaMuerta.png",center_x=960,center_y=70)
+        self.fondo=arcade.Sprite(f"sprites/map/{bioma.tipo_clima}.png",center_x=700,center_y=540,scale=1.1)
+        self.papa_bien=arcade.Sprite("sprites/PapasEstados/PapaBien.png",center_x=700,center_y=70)
+        self.papa_mal=arcade.Sprite("sprites/PapasEstados/PapaMal.png",center_x=700,center_y=70)
+        self.papa_muerta=arcade.Sprite("sprites/PapasEstados/PapaMuerta.png",center_x=700,center_y=70)
 
 
         for i in range(3):
@@ -97,38 +97,47 @@ class Juego(arcade.Window):
             self.lista_vegetation.append(arbol)
             vegetacion += 1
 
+    def show_individual_attributes(self):
+        carnivoro = "si" if self.individual_type.carnivoro else "no"
+        herbivoro = "si" if self.individual_type.herbivoro else "no"
+        tiene_pelo = "si" if self.individual_type.has_hair else "no"
+        es_grande = "si" if self.individual_type.is_big else "no"
+
+        arcade.draw_text(f"Carnívoro: {carnivoro}", 1550, 110, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Herbívoro: {herbivoro}", 1550, 80, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Tiene Pelo: {tiene_pelo}", 1550, 50, arcade.color.ORANGE, 15,font_name="Kenney Pixel Square")
+        arcade.draw_text(f"Es grande: {es_grande}", 1550, 20, arcade.color.WHITE, 15,font_name="Kenney Pixel Square")
+
+
+
+    def show_individual_status(self):
+        arcade.draw_text(self.status_individual, 800, 50, arcade.color.WHITE, 50,font_name="Kenney Pixel Square")
+
+    def show_game_stats(self):
+        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.ORANGE, 40,font_name="Kenney Pixel Square")
+
+        arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.WHITE, 40,font_name="Kenney Pixel Square")
+
     def on_draw(self):
         arcade.start_render()
-        pantalla.dibujar_fondo()
-
-        # self.lista_vegetation.draw()
-
-        # self.lista_rana.draw(pixelated=False)
-        # self.lista_roca.draw(pixelated=False)
-
-        # self.lista_papa.draw()
-
+        self.dibujar_fondo()
 
         dibujar.extend(self.lista_vegetation)
         dibujar.extend(self.lista_rana)
         dibujar.extend(self.lista_roca)
         dibujar.extend(self.lista_papa)
         dibujar.extend(self.lista_fx)
-
         dibujar.sort(key=lambda x: -x.center_y)
         dibujar.draw(pixelated=True)
 
         dibujar.clear()
 
-
         self.cambiar_carita()
+        self.show_individual_status()
+        self.show_individual_attributes()
+        self.show_game_stats()
 
-        arcade.draw_text(self.status_individual, 1020, 50, arcade.color.WHITE, 50,font_name="Kenney Pixel Square")
-        arcade.draw_text(f"Tiempo: {self.tiempo_transcurrido}", 50, 80, arcade.color.ORANGE, 40,font_name="Kenney Pixel Square")
-
-        arcade.draw_text(f"Individuos: {self.cant_individual}", 10, 20, arcade.color.WHITE, 40,font_name="Kenney Pixel Square")
         arcade.finish_render()
-
     def cambiar_carita(self):
         if self.status_individual == VIVE:
             self.papa_bien.draw()
